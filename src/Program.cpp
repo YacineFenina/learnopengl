@@ -1,5 +1,5 @@
 #include <iostream>
-#include <GL/glew.h>
+#include "../header/glad/glad.h"
 #include <GLFW/glfw3.h>
 #include <fstream>
 #include <sstream>
@@ -51,15 +51,11 @@ int main()
         return -1;
     }
     glfwMakeContextCurrent(window);
-    glewExperimental = true; // Necessary for based profile
-	if (glewInit() != GLEW_OK)
-	{
-		cout << "Failed to initialize GLEW! "
-         << "\n";
-		glfwTerminate();
-		return false;
-	}
-	glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    {
+        std::cout << "Failed to initialize GLAD" << std::endl;
+        return -1;
+    }
 
 
     glViewport(0, 0, 800, 600);

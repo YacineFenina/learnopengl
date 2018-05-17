@@ -11,6 +11,9 @@ include_directories(${OPENGL_INCLUDE_DIRS})
 find_package(glfw3 3.2 REQUIRED)
 set(GLFW_INCLUDE_PATH "" CACHE PATH "The directory that contains GL/glfw.h" )
 
+find_library(DLFCN_LIBRARY dl)
+
+
 find_package(glm REQUIRED)
 # Define GLM_INCLUDE_DIRS
 if (GLM_FOUND)
@@ -18,12 +21,6 @@ if (GLM_FOUND)
   link_libraries(${GLM_LIBRARY})
   message(${GLM_LIBRARY})
 endif()
-
-find_package(GLEW REQUIRED)
-if (GLEW_FOUND)
-    include_directories(${GLEW_INCLUDE_DIRS})
-    link_libraries(${GLEW_LIBRARY})
-endif(GLEW_FOUND)
 
 
 file(
@@ -54,5 +51,6 @@ message("on cherche glew ${GLEW_LIBRARIES}")
 
 target_link_libraries(
     ${PROJ_NAME}
+    ${DLFCN_LIBRARY}
     glfw
 )
