@@ -60,8 +60,6 @@ int main()
     }
 
     glViewport(0, 0, 800, 600);
-    unsigned int VBO;
-    glGenBuffers(1, &VBO);
 
     unsigned int vertexShaderID(glCreateShader(GL_VERTEX_SHADER));
     string vertexShader(ReadShader("shaders/vertexShader.glsl"));
@@ -111,6 +109,9 @@ int main()
 
     unsigned int VAO(0);
     glGenVertexArrays(1, &VAO);
+
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
 
     glBindVertexArray(VAO);
     // ============================================
