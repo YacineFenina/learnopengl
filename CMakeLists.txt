@@ -46,9 +46,6 @@ add_executable(
     
 )
 
-message("on cherche opengl ${OPENGL_LIBRARY}")
-message("on cherche glew ${GLEW_LIBRARIES}")
-
 target_link_libraries(
     ${PROJ_NAME}
     ${DLFCN_LIBRARY}

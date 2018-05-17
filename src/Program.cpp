@@ -34,6 +34,8 @@ string ReadShader(char const *filePath)
 }
 
 
+
+
 int main()
 {
     
@@ -53,31 +55,27 @@ int main()
     glfwMakeContextCurrent(window);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
 
-
     glViewport(0, 0, 800, 600);
-
-
-
-
-
-    unsigned int VBO;
-    cout << "??? \n";
-    glGenBuffers(1, &VBO);
-
-
-
-
-
 
     unsigned int vertexShaderID(glCreateShader(GL_VERTEX_SHADER));
     string vertexShader(ReadShader("shaders/vertexShader.glsl"));
     char const *vertexSource = vertexShader.c_str();    
     glShaderSource(vertexShaderID, 1, &vertexSource, NULL);
     glCompileShader(vertexShaderID);
+
+    char infoLog[512];
+    int success;
+    glGetShaderiv(vertexShaderID, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(vertexShaderID, 512, NULL, infoLog);
+        cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
+
 
     unsigned int fragmentShaderID(glCreateShader(GL_FRAGMENT_SHADER));
     string fragmentShader(ReadShader("shaders/fragmentShader.glsl"));
@@ -86,12 +84,23 @@ int main()
     glShaderSource(fragmentShaderID, 1, &fragmentSource, NULL);
     glCompileShader(fragmentShaderID);
 
-
+    glGetShaderiv(fragmentShaderID, GL_COMPILE_STATUS, &success);
+    if (!success)
+    {
+        glGetShaderInfoLog(fragmentShaderID, 512, NULL, infoLog);
+        cout << "ERROR::SHADER::FRAGMENT::COMPILATION_FAILED\n" << infoLog << std::endl;
+    }
 
     unsigned int shaderProgramID(glCreateProgram());
     glAttachShader(shaderProgramID, vertexShaderID);
     glAttachShader(shaderProgramID, fragmentShaderID);
     glLinkProgram(shaderProgramID);
+
+    glGetProgramiv(shaderProgramID, GL_LINK_STATUS, &success);
+    if (!success) {
+        glGetProgramInfoLog(shaderProgramID, 512, NULL, infoLog);
+        std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
+    }
 
     glDeleteShader(vertexShaderID);
     glDeleteShader(fragmentShaderID);
@@ -100,6 +109,9 @@ int main()
 
     unsigned int VAO(0);
     glGenVertexArrays(1, &VAO);
+
+    unsigned int VBO;
+    glGenBuffers(1, &VBO);
 
     glBindVertexArray(VAO);
     // ============================================
