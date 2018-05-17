@@ -34,6 +34,8 @@ string ReadShader(char const *filePath)
 }
 
 
+
+
 int main()
 {
     
@@ -53,25 +55,13 @@ int main()
     glfwMakeContextCurrent(window);
     if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
     {
-        std::cout << "Failed to initialize GLAD" << std::endl;
+        cout << "Failed to initialize GLAD" << std::endl;
         return -1;
     }
 
-
     glViewport(0, 0, 800, 600);
-
-
-
-
-
     unsigned int VBO;
-    cout << "??? \n";
     glGenBuffers(1, &VBO);
-
-
-
-
-
 
     unsigned int vertexShaderID(glCreateShader(GL_VERTEX_SHADER));
     string vertexShader(ReadShader("shaders/vertexShader.glsl"));
